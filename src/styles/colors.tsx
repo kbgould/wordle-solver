@@ -1,0 +1,9 @@
+export const backgroundBlack = '#121213';
+export const letterCorrect = '#328832';
+export const letterIncorrect = '#777';
+export const letterPartial = '#998832';
+export const textWhite = '#ddd';
+export const gray999 = '#999';
+export const gray666 = '#666';
+export const gray333 = '#333';
+export const errorOutline = '#993232';
