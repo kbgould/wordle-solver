@@ -14,6 +14,9 @@ import { ChangeEvent } from 'react';
 const Container = styled.div`
   display: inline-block;
   padding: 12px;
+  @media screen and (max-width: 768px) {
+    padding: 4px;
+  }
 `;
 
 const StyledInput = styled.input<{ state: LetterState, hasError: boolean }>`
@@ -23,6 +26,12 @@ const StyledInput = styled.input<{ state: LetterState, hasError: boolean }>`
   width: 48px;
   background-color: ${backgroundBlack};
   font-size: 32px;
+  padding: 0;
+  @media screen and (max-width: 768px) {
+    height: 44px;
+    width: 28px;
+    font-size: 24px;
+  }
   text-transform: capitalize;
   text-align: center;
   color: ${textWhite};

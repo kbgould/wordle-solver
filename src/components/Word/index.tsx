@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { LetterBox } from '../LetterBox';
-import { LetterAndState, LetterState, WordState } from '../../types';
+import { LetterAndState, WordState } from '../../types';
 import styled from 'styled-components';
 import { gray666, gray999, textWhite } from '../../styles/colors';
 
@@ -8,6 +8,10 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 128px;
   width: 560px;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 80px;
+    width: 340px;
+  }
   align-items: center;
 `;
 
@@ -20,7 +24,14 @@ const EnterButton = styled.button`
   border-radius: 3px;
   height: 70px;
   width: 128px;
-  font-size: 24px;
+  text-align: center;
+  padding: 0;
+  @media screen and (max-width: 768px) {
+    margin-left: 4px;
+    height: 48px;
+    width: 80px;
+    font-size: 16px;
+  }
   cursor: pointer;
   :hover {
     background-color: ${gray999};
@@ -36,24 +47,29 @@ type Props = {
   onCompleteEntry: () => void;
   onChangeLetterAndState: (index: number, letterAndState: LetterAndState) => void;
   wordState: WordState;
+  gameComplete: boolean;
+  onResetGame: () => void;
 };
 
-export const Word = ({ isEditable, size, wordState, onChangeLetterAndState, onCompleteEntry }: Props) => {
+export const Word = ({ isEditable, size, wordState, onChangeLetterAndState, onCompleteEntry, gameComplete, onResetGame }: Props) => {
   return (
       <Container>
         {(Array.apply(null, Array(size))).map((_, idx) => {
           return (
               <div>
                 <LetterBox
-                    isEditable={isEditable}
+                    isEditable={isEditable && !gameComplete}
                     onChange={(letterAndState) => onChangeLetterAndState(idx, letterAndState)}
                     state={wordState[idx]}
                 />
               </div>
           );
         })}
-        {isEditable ? (
+        {(isEditable && !gameComplete) ? (
             <EnterButton onClick={() => onCompleteEntry()}>SUBMIT</EnterButton>
+        ): null}
+        {gameComplete ? (
+            <EnterButton onClick={onResetGame}>RESET</EnterButton>
         ): null}
       </Container>
   );
