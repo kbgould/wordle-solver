@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { letterCorrect } from '../../styles/colors';
+import { LetterBox } from '../LetterBox';
 
 const Container = styled.div`
   margin-top: 24px;
@@ -31,9 +32,9 @@ type Props = {
 export const Recommendation = ({ word }: Props) => {
   return (
       <Container>
-        {word.split('').map((letter) => {
+        {word.split('').map((letter, idx) => {
           return (
-              <div>
+              <div key={`recommended-letter-${idx}`}>
                 <Letter>{letter}</Letter>
               </div>
           );

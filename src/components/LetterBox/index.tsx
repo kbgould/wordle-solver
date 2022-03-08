@@ -63,22 +63,30 @@ const StateSelectorButton = styled.div<{ state: LetterState }>`
 
 type Props = {
   isEditable: boolean;
-  onChange: (letterAndState: LetterAndState) => void;
+  onChange: (letterAndState: LetterAndState, event?: ChangeEvent<HTMLInputElement>) => void;
   state: LetterAndState;
 };
 
 const handleChangeLetter = (
     event: ChangeEvent<HTMLInputElement>,
     state: LetterAndState,
-    onChange: (letterAndState: LetterAndState) => void
+    onChange: (letterAndState: LetterAndState, event?: ChangeEvent<HTMLInputElement>) => void
 ) => {
-  if (/[a-zA-Z]/i.test(event.target.value) || event.target.value === '') {
+  if (event.target.value === '' || /[a-zA-Z]/i.test(event.target.value)) {
     const updated = {
       ...state,
       letter: event.target.value.toUpperCase(),
       hasError: false,
     };
-    onChange(updated);
+    onChange(updated, event);
+  }
+};
+
+const handleKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+) => {
+  if (event.key === '' || /[a-zA-Z\s]/i.test(event.key)) {
+    event.currentTarget.value = '';
   }
 };
 
@@ -86,8 +94,8 @@ export const LetterBox = ({isEditable, onChange, state}: Props) => {
   return (
       <Container>
         <StyledInput
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyPress(event)}
             onChange={(event) => handleChangeLetter(event, state, onChange)}
-            maxLength={1}
             readOnly={!isEditable}
             state={state.state}
             value={state.letter}

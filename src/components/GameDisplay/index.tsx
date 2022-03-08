@@ -5,6 +5,7 @@ import { LetterState, WordState } from '../../types';
 import { findNextBestWordChoice, LetterClues } from '../../helpers/dictionaryTools';
 import Scrabble5LetterDictionary from '../../dictionaries/ScrabbleDict5LetterWords.json';
 import { Recommendation } from '../Recommendation';
+import { gray999 } from '../../styles/colors';
 
 const WORD_SIZE = 5;
 
@@ -24,6 +25,19 @@ const OuterContainer = styled.div`
 
 const InnerContainer = styled.div`
   margin: 0 auto;
+`;
+
+const TextBlock = styled.div`
+  padding: 16px;
+  color: ${gray999};
+  font-size: 18px;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
+`;
+
+const StyledLink = styled.a`
+  color: ${gray999};
 `;
 
 export type GameState = {
@@ -197,6 +211,12 @@ export const GameDisplay = () => {
               }}
           />
           <Recommendation word={nextBestWordAndDictionary.nextBestWord || ''} />
+          <TextBlock>
+            The green word below the inputs is the recommended next best move. Use the text inputs and the clue color selectors below each input to enter the results for each guess. Hit submit to see the next recommendation.
+          </TextBlock>
+          <TextBlock>
+            Built by Keith Gould (<StyledLink href="mailto:keithbgould@gmail.com">keithbgould@gmail.com</StyledLink>)
+          </TextBlock>
         </InnerContainer>
       </OuterContainer>
   );

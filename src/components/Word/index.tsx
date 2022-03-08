@@ -4,7 +4,7 @@ import { LetterAndState, WordState } from '../../types';
 import styled from 'styled-components';
 import { gray666, gray999, textWhite } from '../../styles/colors';
 
-const Container = styled.div`
+const Container = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 128px;
   width: 560px;
@@ -56,20 +56,37 @@ export const Word = ({ isEditable, size, wordState, onChangeLetterAndState, onCo
       <Container>
         {(Array.apply(null, Array(size))).map((_, idx) => {
           return (
-              <div>
+              <div key={`letter-${idx}`}>
                 <LetterBox
                     isEditable={isEditable && !gameComplete}
-                    onChange={(letterAndState) => onChangeLetterAndState(idx, letterAndState)}
+                    onChange={(letterAndState, event) => {
+                      if (event) {
+                        const form = event.target.form;
+                        if (form) {
+                          const index = [...form].indexOf(event.target);
+                          // @ts-ignore
+                          form.elements[index + 1].focus();
+                          event.preventDefault();
+                        }
+                      }
+                      onChangeLetterAndState(idx, letterAndState);
+                    }}
                     state={wordState[idx]}
                 />
               </div>
           );
         })}
         {(isEditable && !gameComplete) ? (
-            <EnterButton onClick={() => onCompleteEntry()}>SUBMIT</EnterButton>
+            <EnterButton onClick={(e) => {
+              onCompleteEntry();
+              e.preventDefault();
+            }}>SUBMIT</EnterButton>
         ): null}
         {gameComplete ? (
-            <EnterButton onClick={onResetGame}>RESET</EnterButton>
+            <EnterButton onClick={(e) => {
+              onResetGame();
+              e.preventDefault();
+            }}>RESET</EnterButton>
         ): null}
       </Container>
   );
